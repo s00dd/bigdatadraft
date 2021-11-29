@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.1.1/d3.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,500" rel="stylesheet">
+        
+		<style type="text/css">
+            
+            .label_styling {
+			font-family:"Open Sans";
+			font-weight: 300;
+			font-size: 14px;
+            
+            .title_styling {
+			font-family:"Open Sans";
+			font-weight: 500;
+			font-size: 20px;
+		}
+		.text_styling {
+			font-family:"Open Sans";
+			font-weight: 300;
+			font-size: 14px;
+		}
+
+		</style>
+
+    
+    
+    
+    
+    
+    
+    
+    <meta charset="UTF-8" />
+    <title>Employment and Migration</title>
+   	<link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,500" rel="stylesheet">
+   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+    <style>
+
+    		p {
+    			font-family: 'Lato', sans-serif;
+    			color:#353536;
+    			font-weight:300;
+          text-align:justify;
+    		}
+        p1 {
+    			font-family: 'Lato', sans-serif;
+    			color:#353536;
+          font-size:20px;
+    			font-weight:390;
+          text-align:justify;
+    		}
+
+    		svg {
+    			width:100%;
+    			height:600px;
+    			padding-left:5%;
+    			padding-right:50px;
+    		}
+
+    		h1 {
+          font-family: 'Raleway', sans-serif;
+    			font-size:70px;
+    			font-weight:800;
+    			line-height:1.3;
+          text-align:center;
+          color:#FFFFFF;
+    		}
+        h2 {
+          font-family: 'Raleway', sans-serif;
+    			font-size:40px;
+    			font-weight:400;
+    			line-height:1.3;
+          text-align:center;
+          color:#FFFFFF;
+    		}
+        h3 {
+    			font-family: 'Raleway', sans-serif;
+    			color:#353536;
+          font-size:15px;
+    			font-weight:300;
+          text-align:center;
+          color:#FFFFFF;
+    		}
+        h4 {
+    			font-family: 'Raleway', sans-serif;
+    			color:#353536;
+          font-size:30px;
+    			font-weight:600;
+          color:#353536;
+    		}
+        h5 {
+    			font-family: 'Raleway', sans-serif;
+    			color:#353536;
+          font-size:30px;
+    			font-weight:600;
+          color:#353536;
+          text-align:center;
+    		}
+
+        header.masthead {
+          position: relative;
+          margin-bottom: 3rem;
+          padding-top: calc(8rem + 57px);
+          padding-bottom: 8rem;
+          background: no-repeat center center;
+          background-color: #6c757d;
+          background-size: cover;
+          background-attachment: scroll;
+        }
+        header.masthead:before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #212529;
+          opacity: 0.5;
+        }
+
+    		#firstvisualdiv{
+          position: -webkit-sticky;
+          position: sticky;
+          top: 5px;
+          border-color: black;
+          background-color: #d6efb3;
+          padding: 100px;
+          transition: opacity 0.8s;
+         -webkit-transition: opacity 0.8s;
+        }
+
+        #secondvisualdiv {
+          position: -webkit-sticky;
+          position: sticky;
+          top: -1px;
+          padding: 100px;
+          transition: opacity 0.8s;
+         -webkit-transition: opacity 0.8s;
+        }
+
+        #thirdvisualdiv {
+          position: -webkit-sticky;
+          position: sticky;
+          /* border-color: black;
+          background-color: gray; */
+          top: 10px;
+          /* padding: 100px; */
+          transition: opacity 0.8s;
+         -webkit-transition: opacity 0.8s;
+        }
+
+        #fourthvisualdiv{
+          position: -webkit-sticky;
+          position: sticky;
+          top: 5px;
+          /* border-color: black;
+          background-color: #d6efb3;
+          padding: 100px; */
+          transition: opacity 0.8s;
+         -webkit-transition: opacity 0.8s;
+        }
+
+       .img{
+          max-width: 100%;
+          max-height: 100%;
+          position: relative;
+          opacity: 0;
+          transition: opacity 1.2s;
+          -webkit-transition: opacity 1.2s;
+        }
+
+       .img1{
+           max-width: 100%;
+           max-height: 100%;
+           position: relative;
+           opacity: 0;
+           transition: opacity 1.2s;
+           -webkit-transition: opacity 1.2s;
+        }
+
+       .img2{
+          max-width: 100%;
+          max-height: 100%;
+          position: relative;
+          opacity: 0;
+          transition: opacity 1.2s;
+          -webkit-transition: opacity 1.2s;
+        }
+
+        .img3{
+           max-width: 100%;
+           max-height: 100%;
+           position: relative;
+           opacity: 0;
+           transition: opacity 1.2s;
+           -webkit-transition: opacity 1.2s;
+         }
+
+       .text1opacity, .text2opacity, .text3opacity{
+          font-size:30px;
+          fill:blue;
+          opacity:0;
+          transition: opacity 0.8s;
+          -webkit-transition: opacity 0.8s;
+        }
+
+        /* .text3opacity {
+          font-size:30px;
+          fill:blue;
+          opacity:0;
+          transition: opacity 0.8s;
+          color: blue;
+          -webkit-transition: opacity 0.8s;
+        } */
+
+    	  .active {
+          opacity:1;
+        }
+
+        .deactive {
+          opacity:0;
+        }
+
+        .lighten {
+          opacity:0.3;
+        }
+
+    </style>
+</head>
+
+    
+    
+    
+<body>
+    
+
+    
+  <header class="masthead" style="background-image: url('assets/img/migration-bg.jpg')">
+    <!-- <div class="row"> -->
+    <div class="col-auto">
+        <br><br>
+      <h1>Employment and Migration</h1>
+      <br>
+      <h3>By Lakshmi and Soad</h3>
+      <br><br>
+      <h2>Expanding Regular Pathways for US Employment from Northern Triangle Countries </h2>
+      <br><br>
+      <hr>
+    </div>
+  </header>
+  <main role="main" class="container">
+          
+   
+    
+      
+    <div class="row">
+      <br><br>
+      <p1>More than two million people are estimated to have left the Northern Triangle (El Salvador, Guatemala, and Honduras) since 2014, many fleeing poverty, violence, and other hardships. U.S. administrations have varied in their responses to this rise, including changes to immigration policies. The U.S. and its regional partners face a long-term challenge to promote orderly and managed migration from the region. To address migration’s root causes in Central America is key. Responses need to consider expanding legal pathways. These pathways could include seasonal employment-based visa programs to create regulated, temporary employment opportunities in the United States for Central Americans seeking to migrate primarily for economic reasons and who see this as an opportunity to improve their family’s livelihood.
+      </p1>
+      <br><br>
+      <hr>
+    </div>
+    <br><br>
+      
+    <div class="row">
+     	<div class="col-4">
+        <h4 id="text1">REASONS FOR MIGRATION</h4>
+        <br><br>
+       	<p>Unemployment and search for a better salary feature as the biggest motivations for migration. Using data from the World Food Program Survey (June 2021), the bar chart showcases the top motivations for migration. Given how employment concerns are central to migration from the Northern Triangle to the United States, these visualizations aim to support advocacy groups in their attempts to enable better migration pathways focused on employment. Unemployment and search for a better salary feature as the biggest motivations for migration. Using data from the World Food Program Survey (June 2021), the bar chart showcases the top motivations for migration. Given how employment concerns are central to migration from the Northern Triangle to the United States,  
+        </p>
+      </div>
+
+      <div class="col-8">
+	 	         <div id="viz1"></div>
+        <main>
+            <div id="viz1" ></div>
+
+        </main>
+		<script type="text/javascript">
+            const agriculturedata = [
+                ["Search for a Better Job", 76.3],
+                ["Unemployment", 38.1],
+                ["Lack of Money for Basic Needs", 21.6],
+                ["To Send Remittances", 17.1],
+                ["Lack of Money for Food", 14.4],
+                ["Family Reunification", 8.4],
+                ["Unsafe", 7.3]
+            ];
+
+			let width = 1200;
+			let height = 1000;
+            let marginLeft = 250;
+            let marginTop = 80;
+            let barHeight = 20;
+            let widthMultiplier = 5;
+            let gap = 5;
+
+            // define svg
+			const svg = d3.select("#viz1")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+
+                
+			
+            // add rectangle bars
+            svg.append("g")
+                .attr("class", "rect-bars")
+                .attr("transform", "translate("+marginLeft+", " + marginTop+")")
+            .selectAll("rect")
+                .data(agriculturedata)
+                .enter()
+                .append("rect")
+                    .attr("y", (d, i) => i * (20 + 10 + gap) + 30)
+                    .attr("x", 50)
+                    .attr("width", d => d[1] * widthMultiplier)
+                    .attr("height", 30)
+                    .attr('fill-opacity', 0.7)
+                    .attr("fill", "black");
+            
+
+            
+            svg.selectAll("text")
+
+                 .data(agriculturedata)
+
+                 .enter()
+
+                 .append("text")
+
+                 .text(function(d) { return d[0]})
+                .attr("transform", "translate("+marginLeft+", " + marginTop+")")
+
+                 .attr("y", (d, i) => i * (20 + 10 + gap) + 50)
+               
+                .attr("x", 30)
+
+                .attr('class','text_styling')
+                 
+                 .attr("fill" , "black")
+
+                .attr("text-anchor", "end");
+                    
+             svg.selectAll("text2")
+
+                 .data(agriculturedata)
+
+                 .enter()
+
+                 .append("text")
+                            .attr("transform", "translate("+marginLeft+", " + marginTop+")")
+
+                 .text(function(d) { return d[1] + "%"})
+
+                 .attr("y", (d, i) => i * (20 + 10 + gap) + 45)
+               
+                .attr("x", d => d[1] * widthMultiplier + 60)
+
+                 .attr("class", "label_styling")
+
+                 
+
+                 .attr("fill" , "black")
+            
+            
+                svg.selectAll("text3")
+                 .data(agriculturedata)
+                .attr("class", "title_styling")
+                 .enter()
+                    .append("text")
+                            .attr("transform", "translate("+marginLeft+", " + marginTop+")")
+                .attr("x", (230))             
+                .attr("y", 0)
+                .attr("text-anchor", "middle")  
+                .text("Reason(s) for Migrating");
+
+                
+		</script>
+        </div>
+      </div>
+      
+ <div class="row">
+      <h4 id="text10">US AGRICULTURE'S DEPENDENCE ON MIGRANT LABOR</h4>
+      <p1>With a group of migrants looking for work, the flipside of the agricultural workforce in the US shows an increasing depending on foreign workers. Agriculture, food, and related industries contributed $1.109 trillion to the U.S. gross domestic product (GDP) in 2019, a 5.2% share (USDA ERS). The output of America’s farms contributed $136.1 billion of this sum, about 0.6% of GDP. This incredibly sizable economic sector requires immense labor, a labor picture that has greatly shifted over the decades. According to data from the Farm Labor Survey (FLS) of USDA's National Agricultural Statistical Service (NASS), the number of self-employed and family farmworkers declined from 7.60 million in 1950 to 2.01 million in 1990, a 74% reduction, resulting in an increased proportion of hired workers over time. From 2002-2014, there has been a decline of 146,000 field and crop workers in America due to labor shortages. 73% of the crop farm worker population in the United States are immigrant workers, while about 48% of hired crop farmworkers have no work authorization. It’s clear that the health of America’s farms and the agriculture industry is tied directly to immigration.
+    <br><br>
+    Given these drastic needs, the H-2A visa program has attempted to fill in this labor shortage. One of the clearest indicators of the scarcity of farm labor is the fact that the number of H-2A positions requested and approved has increased more than fivefold in the past 15 years, from around 48,000 positions certified in 2005 to over 275,000 in 2020. A 2010 national survey conducted by the National Council of Agricultural Employers of H-2A employers showed that 68% of the 36,000 domestic workers state agencies referred to H-2A employers did not accept jobs offered to them. The job requires long, laborious work for minimal pay. But Mexican and Central American immigrants can make double their local minimum wages by working in the U.S.  
+      </p1>
+      <br><br>
+      <hr>
+    </div>
+    <div class="row">
+
+      <div class="col-5">
+     	  <h4 id="text2">H-2 VISAS REACH IN CENTRAL AMERICA</h4>
+        <br><br>
+        <p>Despite these potential benefits and employee pool in Central America, H-2 programs have been used to recruit only small numbers of workers in El Salvador, Guatemala and Honduras, which are the three top sending countries from Central America. In 2020, more than 90 percent of H-2A visas and more than 70 percent of H-2B visas went to Mexicans, while workers from Guatemala received less than 2 percent of H-2As and no more than 4 percent of H-2Bs. These figures were even smaller for workers from El Salvador and Honduras.
+          <br><br>
+        The current system relies on agricultural employers to recruit workers of their choice from any country on the designated list. US agricultural employers’ significant reliance on Mexico could be due an established network of governmental and NGOs that helps prepare Mexican nationals for the H-2 application process. Despite there being no cap on H-2A visas, it is easier, cheaper, and faster for US employers to continue to recruit workers from Mexico.
+        </p>
+        <br>
+        <p id="text3">-</p>
+     	  <br><br>
+      </div>
+
+        <div class="col-7">
+	 	         <div id="viz2"></div>
+        <main>
+            <div id="viz2" ></div>
+
+        </main>
+		<script type="text/javascript">
+            const agriculturedata2 = [
+                ["Mexico", 197908],
+                ["South Africa", 5508],
+                ["Jamaica", 4659],
+                ["Guatemala", 2123],
+                ["Nicaragua", 693],
+                ["Honduras", 299],
+                ["Costa Rica", 243],
+                ["Romania", 224],
+                ["El Salvador",168]
+            ];
+
+			 width = 1200;
+			height = 1000;
+            marginLeft = 150;
+            const marginTop2 = 100;
+            barHeight = 20;
+            widthMultiplier = .0015;
+            gap = 5;
+
+            // define svg
+			const svg2 = d3.select("#viz2")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+            
+
+                
+			
+            // add rectangle bars
+            svg2.append("g")
+                .attr("class", "rect-bars")
+                .attr("transform", "translate("+marginLeft+", " + marginTop2+")")
+            .selectAll("rect")
+                .data(agriculturedata2)
+                .enter()
+                .append("rect")
+                    .attr("y", (d, i) => i * (20 + 10 + gap) + 30)
+                    .attr("x", 50)
+                    .attr("width", d => d[1] * widthMultiplier)
+                    .attr("height", 30)
+                    .attr('fill-opacity', 0.7)
+                    .attr("fill", "black");
+            
+
+            
+            svg2.selectAll("text")
+
+                 .data(agriculturedata2)
+
+                 .enter()
+
+                 .append("text")
+
+                 .text(function(d) { return d[0]})
+                .attr("transform", "translate("+marginLeft+", " + marginTop2+")")
+
+                 .attr("y", (d, i) => i * (20 + 10 + gap) + 50)
+               
+                .attr("x", 30)
+
+                .attr('class','text_styling')
+                 
+                 .attr("fill" , "black")
+
+                .attr("text-anchor", "end");
+                    
+             svg2.selectAll("text2")
+
+                 .data(agriculturedata2)
+
+                 .enter()
+
+                 .append("text")
+                            .attr("transform", "translate("+marginLeft+", " + marginTop2+")")
+
+                 .text(function(d) { return d[1]})
+
+                 .attr("y", (d, i) => i * (20 + 10 + gap) + 45)
+               
+                .attr("x", d => d[1] * widthMultiplier + 60)
+
+                 .attr("class", "label_styling")
+
+                 
+
+                 .attr("fill" , "black")
+            
+            
+                svg2.selectAll("text3")
+                 .data(agriculturedata2)
+                .attr("class", "title_styling")
+                 .enter()
+                    .append("text")
+                            .attr("transform", "translate("+marginLeft+", " + marginTop2+")")
+                .attr("x", (200))             
+                .attr("y", 0)
+                .attr("text-anchor", "middle")  
+                .text("Distribution of H-2A Visas by Recipient Country");
+
+                
+		</script>
+        </div>
+      </div>
+
+  <div>
+      <div class="col-12">
+        <br><br>
+        <div id="firstvisualdiv">
+          <h4 id="text4" style="text-align:center">POTENTIAL BENEFITS OF EXPANDING H-2 VISAS TO NORTHERN TRIANGLE</h4>
+          <br><br>
+       	  <h4 id="text5" class="text1opacity" style="font-size:25px; text-align:center">Fill a major need in the US agricultural sector</h4>
+          <br><br>
+          <h4 id="text6" class="text2opacity" style="font-size:25px; text-align:center">Expanding the seasonal worker programs can contribute to the decline in unauthorized migration, as it did in Mexico since 2010, alleviating pressures at the border</h4>
+          <br><br>
+          <h4 id="text7" class="text3opacity" style="font-size:25px; text-align:center">Give prospective migrants opportunities to work legally for short periods of time in the United States</h4>
+          <br><br>
+        </div>
+     	</div>
+      <br><br>
+      <div class="col-12">
+        <br><br>
+     		<p>The Migration Policy Institute recommends that foreign farmworkers be recruited from the Northern Triangle). The employers would continue to choose the workers they want, but that choice would be limited in that, initially, they would have to draw at least 25% of their work force from the Northern Triangle, and in the following year, at least 50% of it from these three nations.
+        <br><br>
+        In April 2021, The Biden administration announced they would set aside 6,000 seasonal guest worker visas for people from Guatemala, Honduras and El Salvador in the coming months, a small step toward establishing more legal pathways to the United States from the region. The visa carve-out for the so-called Northern Triangle countries “demonstrates DHS’s commitment” to creating more legal avenues for migration from the region, Secretary Alejandro Mayorkas said in a statement.</p>
+        <br><br>
+        <h4 id="text9" style="opacity:0">fjdjsd</p>
+     	</div>
+
+      <div class="col-12">
+        <h5 id="text8">AREAS IN FOCUS</h5>
+        <br><br>
+       	<p>The WFP Survey, which forms the basis of this study, was conducted in four departments in each of the three countries -- Guatemala, El Salvador and Honduras. The map shows the geographic extent of the sample population within each of the departments.</p>
+       	<br><br>
+      </div>
+
+      <div class="col-12">
+        <div class=img3>
+           <center>
+           <embed type="text/html" src="assets/dept_map.html" width="1000px" height="700px">
+           </center>
+        </div>
+      </div>
+    
+
+       	<!-- <p id="text2">Now you have scrolled at this paragraph with "text2" id. Accordingly, you will activate a new ScrollMagic.Scene that uses "#text2" as a trigger. Look out that when creating a ScrollMagic.Scene in your script, you need to add a "#" sign before the id name. In the script, we use ".setClassToggle()" to define a CSS class modification while the scene is active. When the scene triggers the classes will be added to the supplied element and removed when the scene is over. For example, when this scene is triggered, .setClassToggle() adds the CSS class 'active' (with opacity as 1) to the class "text3opacity" (with an original opacity 0). So the text appears.</p>
+       	<br><br>
+
+       	<p id="text3">So now you have scrolled at this paragraph with "text3" id. Looking at the CSS code, you will see that we define ".text3opacity" with a different color than the prevous two.  Keep in mind, ".text3opacity" is a CSS class while "#text3" is a CSS id.</p>
+       	<br><br>
+     	</div> -->
+
+
+     	<!-- <div class="col-8">
+     		<div id="secondvisualdiv">
+          <img class="img" src="https://cdn.theculturetrip.com/wp-content/uploads/2016/09/mit_building_10_and_the_great_dome_cambridge_ma.jpg">
+     		</div>
+     	</div> -->
+     </div>
+  </main><!-- /.container -->
+</body>
+
+<script type="text/javascript">
+      var controller = new ScrollMagic.Controller();
+
+      new ScrollMagic.Scene({triggerElement: "#text5"})
+          .setClassToggle(".img", "active")
+          .addTo(controller);
+
+      new ScrollMagic.Scene({triggerElement: "#text1"})
+          .setClassToggle(".img1", "active")
+          .addTo(controller);
+
+      new ScrollMagic.Scene({triggerElement: "#text2"})
+          .setClassToggle(".img1", "deactive")
+          .addTo(controller);
+
+      new ScrollMagic.Scene({triggerElement: "#text2"})
+          .setClassToggle(".img2", "active")
+          .addTo(controller);
+
+      new ScrollMagic.Scene({triggerElement: "#text3"})
+          .setClassToggle(".img2", "deactive")
+          .addTo(controller);
+
+      new ScrollMagic.Scene({triggerElement: "#text2"})
+          .setClassToggle("#firstvisualdiv", "active")
+          .addTo(controller);
+
+      new ScrollMagic.Scene({triggerElement: "#text4"})
+        	.setClassToggle(".text1opacity", "active")
+        	.addTo(controller);
+
+      new ScrollMagic.Scene({triggerElement: "#text5"})
+        	.setClassToggle(".text1opacity", "lighten")
+        	.addTo(controller);
+
+    	new ScrollMagic.Scene({triggerElement: "#text5"})
+        	.setClassToggle(".text2opacity", "active")
+        	.addTo(controller);
+
+      new ScrollMagic.Scene({triggerElement: "#text6"})
+        	.setClassToggle(".text2opacity", "lighten")
+        	.addTo(controller);
+
+  		new ScrollMagic.Scene({triggerElement: "#text6"})
+        	.setClassToggle(".text3opacity", "active")
+        	.addTo(controller);
+
+      new ScrollMagic.Scene({triggerElement: "#text7"})
+        	.setClassToggle(".text3opacity", "lighten")
+        	.addTo(controller);
+
+      new ScrollMagic.Scene({triggerElement: "#text8"})
+        	.setClassToggle(".img3", "active")
+        	.addTo(controller);
+      //
+      // new ScrollMagic.Scene({triggerElement: "#text9"})
+      //     	.setClassToggle(".text1opacity", "active")
+      //     	.addTo(controller);
+      // new ScrollMagic.Scene({triggerElement: "#text9"})
+      //     	.setClassToggle(".text2opacity", "active")
+      //     	.addTo(controller);
+      // new ScrollMagic.Scene({triggerElement: "#text9"})
+      //     	.setClassToggle(".text3opacity", "active")
+      //     	.addTo(controller);
+
+
+</script>
+</body>
+</html>

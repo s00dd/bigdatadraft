@@ -277,123 +277,157 @@
       </div>
 
       <div class="col-8">
-	 	         <div id="viz1"></div>
+	 	         <div id="viz3"></div>
         <main>
-            <div id="viz1" ></div>
+            <div id="viz3" ></div>
 
         </main>
 		<script type="text/javascript">
-            const agriculturedata = [
-                ["Search for a Better Job", 76.3],
-                ["Unemployment", 38.1],
-                ["Lack of Money for Basic Needs", 21.6],
-                ["To Send Remittances", 17.1],
-                ["Lack of Money for Food", 14.4],
-                ["Family Reunification", 8.4],
-                ["Unsafe", 7.3]
+            
+            var data = [
+                {group: "Search for a better job", GT: 430, HND: 453, SLV: 356},
+                {group: "Unemployment", GT: 190, HND: 286, SLV: 142},
+                {group: "Lack of Money for Basic Needs", GT: 94, HND: 127, SLV: 88},
+                {group: "Remittances", GT: 92, HND: 83, SLV: 102},
+                {group: "Lack of Money for Food", GT: 94, HND: 101, SLV: 39},
+                {group: "Family Reunification", GT: 24, HND: 33, SLV: 80},
+                {group: "Unsafe", GT: 4, HND: 23, SLV: 91},
             ];
 
-			let width = 1200;
-			let height = 1000;
-            let marginLeft = 250;
-            let marginTop = 80;
-            let barHeight = 20;
-            let widthMultiplier = 5;
-            let gap = 5;
+            var subgroups = ["GT", "HND", "SLV"]
+            
+            var groups = ["Search for a better job", "Unemployment", "Lack of Money for Basic Needs", "Remittances", "Lack of Money for Food", "Family Reunification", "Unsafe"]
+            
+            //var groups = data.map((rowInData)=>{return rowInData.group});
+            
+            var stackGen = d3.stack()
+                .keys(subgroups)
+            
+            var stackedSeries = stackGen(data); 
+            
+            console.log(stackedSeries)
+            
+
+			var margin = {top: 10, right: 30, bottom: 20, left: 50};
+            width = 460- margin.left - margin.right;
+            height = 400 - margin.top - margin.bottom;
 
             // define svg
-			const svg = d3.select("#viz1")
-                .append("svg")
-                .attr("width", width)
-                .attr("height", height)
+			const svg3 = d3.select("#viz3")
+            .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .attr("viewBox", [0, 0, 460, height])
+            .append("g")
+                .attr("transform",
+                      "translate(" + margin.left + "," + margin.top + ")");
 
-                
-			
-            // add rectangle bars
-            svg.append("g")
-                .attr("class", "rect-bars")
-                .attr("transform", "translate("+marginLeft+", " + marginTop+")")
-            .selectAll("rect")
-                .data(agriculturedata)
-                .enter()
-                .append("rect")
-                    .attr("y", (d, i) => i * (20 + 10 + gap) + 30)
-                    .attr("x", 50)
-                    .attr("width", d => d[1] * widthMultiplier)
-                    .attr("height", 30)
-                    .attr('fill-opacity', 0.7)
-                    .attr("fill", "black");
+         // Add X axis
+              var x = d3.scaleBand()
+                  .domain(groups)
+                  .range([0, 200])
+                  .padding([0.2])
+              svg3.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x).tickSizeOuter(0));
+           
+           // Add Y axis
+              var y = d3.scaleLinear()
+                .domain([0, 1300])
+                .range([ height, 0 ]);
+              svg3.append("g")
+                .call(d3.axisLeft(y));
+
+          // color palette = one color per subgroup
+              var color = d3.scaleOrdinal()
+                .domain(subgroups)
+                .range(d3.schemeSet2);
+
+  
+			  // What happens when user hover a bar
+                  var mouseover = function(event, d) {
+                    // what subgroup are we hovering?
+                    var subgroupName = d3.select(this.parentNode).datum().key; // This was the tricky part
+                    console.log(subgroupName,d.data,d)
+                    var subgroupValue = d.data[subgroupName];
+                    // Reduce opacity of all rect to 0.2
+                      d3.selectAll(".myRect").style("opacity", 0.2)
+                    // Highlight all rects of this subgroup with opacity 0.8. It is possible to select them since they have a specific class = their name.
+                    d3.selectAll("."+subgroupName)
+                      .style("opacity", 1)
+                    }
+                  
+          // When user do not hover anymore
+              var mouseleave = function(event, d) {
+                // Back to normal opacity: 0.8
+                d3.selectAll(".myRect")
+                  .style("opacity",0.8)
+    }
+
+        // Show the bars
+              svg3.append("g")
+                .selectAll("g")
+                // Enter in the stack data = loop key per key = group per group
+                .data(stackedSeries)
+                .enter().append("g")
+                  .attr("fill", function(d) { return color(d.key); })
+                  .attr("class", function(d){ return "myRect " + d.key }) // Add a class to each subgroup: their name
+                  .selectAll("rect")
+                  // enter a second time = loop subgroup per subgroup to add all rectangles
+                  .data(function(d) { return d; })
+                  .enter().append("rect")
+                    .attr("x", function(d) { return x(d.data.group); })
+                    .attr("y", function(d) { return y(d[1]); })
+                    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+                    .attr("width",x.bandwidth())
+                    .attr("stroke", "grey")
+                  .on("mouseover", mouseover)
+                  .on("mouseleave", mouseleave)
             
-
-            
-            svg.selectAll("text")
-
-                 .data(agriculturedata)
-
-                 .enter()
-
-                 .append("text")
-
-                 .text(function(d) { return d[0]})
-                .attr("transform", "translate("+marginLeft+", " + marginTop+")")
-
-                 .attr("y", (d, i) => i * (20 + 10 + gap) + 50)
-               
-                .attr("x", 30)
-
-                .attr('class','text_styling')
-                 
-                 .attr("fill" , "black")
-
-                .attr("text-anchor", "end");
-                    
-             svg.selectAll("text2")
-
-                 .data(agriculturedata)
-
-                 .enter()
-
-                 .append("text")
-                            .attr("transform", "translate("+marginLeft+", " + marginTop+")")
-
-                 .text(function(d) { return d[1] + "%"})
-
-                 .attr("y", (d, i) => i * (20 + 10 + gap) + 45)
-               
-                .attr("x", d => d[1] * widthMultiplier + 60)
-
-                 .attr("class", "label_styling")
-
-                 
-
-                 .attr("fill" , "black")
-            
-            
-                svg.selectAll("text3")
-                 .data(agriculturedata)
+             // add title
+            svg3.append("text")
                 .attr("class", "title_styling")
-                 .enter()
-                    .append("text")
-                            .attr("transform", "translate("+marginLeft+", " + marginTop+")")
-                .attr("x", (230))             
-                .attr("y", 0)
-                .attr("text-anchor", "middle")  
-                .text("Reason(s) for Migrating");
+                .attr("y", margin.top - 25) 
+                .attr("x", margin.left)
+                .text("Motivations for Migrating");
+            
+            svg3.append("text")
+                .attr("class", "source-styling")
+                .attr("y", (margin.top + 420)) 
+                .attr("x", 3)
+                .text("Data Source: World Food Program Survey 6/21");
 
                 
 		</script>
         </div>
       </div>
-      
- <div class="row">
+ 
+<div class="row">
+    <div class="col-6">
       <h4 id="text10">US AGRICULTURE'S DEPENDENCE ON MIGRANT LABOR</h4>
       <p1>With a group of migrants looking for work, the flipside of the agricultural workforce in the US shows an increasing depending on foreign workers. Agriculture, food, and related industries contributed $1.109 trillion to the U.S. gross domestic product (GDP) in 2019, a 5.2% share (USDA ERS). The output of America’s farms contributed $136.1 billion of this sum, about 0.6% of GDP. This incredibly sizable economic sector requires immense labor, a labor picture that has greatly shifted over the decades. According to data from the Farm Labor Survey (FLS) of USDA's National Agricultural Statistical Service (NASS), the number of self-employed and family farmworkers declined from 7.60 million in 1950 to 2.01 million in 1990, a 74% reduction, resulting in an increased proportion of hired workers over time. From 2002-2014, there has been a decline of 146,000 field and crop workers in America due to labor shortages. 73% of the crop farm worker population in the United States are immigrant workers, while about 48% of hired crop farmworkers have no work authorization. It’s clear that the health of America’s farms and the agriculture industry is tied directly to immigration.
     <br><br>
     Given these drastic needs, the H-2A visa program has attempted to fill in this labor shortage. One of the clearest indicators of the scarcity of farm labor is the fact that the number of H-2A positions requested and approved has increased more than fivefold in the past 15 years, from around 48,000 positions certified in 2005 to over 275,000 in 2020. A 2010 national survey conducted by the National Council of Agricultural Employers of H-2A employers showed that 68% of the 36,000 domestic workers state agencies referred to H-2A employers did not accept jobs offered to them. The job requires long, laborious work for minimal pay. But Mexican and Central American immigrants can make double their local minimum wages by working in the U.S.  
       </p1>
       <br><br>
+      </div>
+    <div class="col-6">
+        <br><br>
+        <div id="firstvisualdiv">
+          <h4 id="text4" style="text-align:center">POTENTIAL BENEFITS OF EXPANDING H-2 VISAS TO NORTHERN TRIANGLE</h4>
+          <br><br>
+       	  <h4 id="text5" class="text1opacity" style="font-size:25px; text-align:center">Fill a major need in the US agricultural sector</h4>
+          <br><br>
+          <h4 id="text6" class="text2opacity" style="font-size:25px; text-align:center">Expanding the seasonal worker programs can contribute to the decline in unauthorized migration, as it did in Mexico since 2010, alleviating pressures at the border</h4>
+          <br><br>
+          <h4 id="text7" class="text3opacity" style="font-size:25px; text-align:center">Give prospective migrants opportunities to work legally for short periods of time in the United States</h4>
+          <br><br>
+        </div>
+     	</div>
       <hr>
     </div>
+    </div>  
+<!--      svg2-->
     <div class="row">
 
       <div class="col-5">
@@ -440,7 +474,7 @@
                 .append("svg")
                 .attr("width", width)
                 .attr("height", height)
-            
+                .attr("viewBox", [0, 0, .5*width, .5*height])
 
                 
 			
@@ -521,19 +555,7 @@
       </div>
 
   <div>
-      <div class="col-12">
-        <br><br>
-        <div id="firstvisualdiv">
-          <h4 id="text4" style="text-align:center">POTENTIAL BENEFITS OF EXPANDING H-2 VISAS TO NORTHERN TRIANGLE</h4>
-          <br><br>
-       	  <h4 id="text5" class="text1opacity" style="font-size:25px; text-align:center">Fill a major need in the US agricultural sector</h4>
-          <br><br>
-          <h4 id="text6" class="text2opacity" style="font-size:25px; text-align:center">Expanding the seasonal worker programs can contribute to the decline in unauthorized migration, as it did in Mexico since 2010, alleviating pressures at the border</h4>
-          <br><br>
-          <h4 id="text7" class="text3opacity" style="font-size:25px; text-align:center">Give prospective migrants opportunities to work legally for short periods of time in the United States</h4>
-          <br><br>
-        </div>
-     	</div>
+     
       <br><br>
       <div class="col-12">
         <br><br>
@@ -550,6 +572,10 @@
        	<p>The WFP Survey, which forms the basis of this study, was conducted in four departments in each of the three countries -- Guatemala, El Salvador and Honduras. The map shows the geographic extent of the sample population within each of the departments.</p>
        	<br><br>
       </div>
+      
+      
+      
+      
 
       <div class="col-12">
         <div class=img3>
@@ -558,7 +584,7 @@
            </center>
         </div>
       </div>
-    
+  
 
        	<!-- <p id="text2">Now you have scrolled at this paragraph with "text2" id. Accordingly, you will activate a new ScrollMagic.Scene that uses "#text2" as a trigger. Look out that when creating a ScrollMagic.Scene in your script, you need to add a "#" sign before the id name. In the script, we use ".setClassToggle()" to define a CSS class modification while the scene is active. When the scene triggers the classes will be added to the supplied element and removed when the scene is over. For example, when this scene is triggered, .setClassToggle() adds the CSS class 'active' (with opacity as 1) to the class "text3opacity" (with an original opacity 0). So the text appears.</p>
        	<br><br>
@@ -574,6 +600,8 @@
      		</div>
      	</div> -->
      </div>
+      
+      
   </main><!-- /.container -->
 </body>
 

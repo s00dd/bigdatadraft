@@ -30,10 +30,6 @@
     
     
     
-    
-    
-    
-    
     <meta charset="UTF-8" />
     <title>Employment and Migration</title>
    	<link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500" rel="stylesheet">
@@ -258,7 +254,7 @@
           
    
     
-      
+<!--    Introduction -->
     <div class="row">
       <br><br>
       <p1>More than two million people are estimated to have left the Northern Triangle (El Salvador, Guatemala, and Honduras) since 2014, many fleeing poverty, violence, and other hardships. U.S. administrations have varied in their responses to this rise, including changes to immigration policies. The U.S. and its regional partners face a long-term challenge to promote orderly and managed migration from the region. To address migration’s root causes in Central America is key. Responses need to consider expanding legal pathways. These pathways could include seasonal employment-based visa programs to create regulated, temporary employment opportunities in the United States for Central Americans seeking to migrate primarily for economic reasons and who see this as an opportunity to improve their family’s livelihood.
@@ -267,8 +263,12 @@
       <hr>
     </div>
     <br><br>
-      
+     
+
+<!--   Reasons for Migration-->
     <div class="row">
+        
+<!--        Text -->
      	<div class="col-4">
         <h4 id="text1">REASONS FOR MIGRATION</h4>
         <br><br>
@@ -276,6 +276,7 @@
         </p>
       </div>
 
+<!--       Interactive Bar Chart -->
       <div class="col-8">
 	 	         <div id="viz3"></div>
         <main>
@@ -402,7 +403,10 @@
         </div>
       </div>
  
+<!--    US Ag Migrant Labor  -->
 <div class="row">
+    
+<!--    Text-->
     <div class="col-6">
       <h4 id="text10">US AGRICULTURE'S DEPENDENCE ON MIGRANT LABOR</h4>
       <p1>With a group of migrants looking for work, the flipside of the agricultural workforce in the US shows an increasing depending on foreign workers. Agriculture, food, and related industries contributed $1.109 trillion to the U.S. gross domestic product (GDP) in 2019, a 5.2% share (USDA ERS). The output of America’s farms contributed $136.1 billion of this sum, about 0.6% of GDP. This incredibly sizable economic sector requires immense labor, a labor picture that has greatly shifted over the decades. According to data from the Farm Labor Survey (FLS) of USDA's National Agricultural Statistical Service (NASS), the number of self-employed and family farmworkers declined from 7.60 million in 1950 to 2.01 million in 1990, a 74% reduction, resulting in an increased proportion of hired workers over time. From 2002-2014, there has been a decline of 146,000 field and crop workers in America due to labor shortages. 73% of the crop farm worker population in the United States are immigrant workers, while about 48% of hired crop farmworkers have no work authorization. It’s clear that the health of America’s farms and the agriculture industry is tied directly to immigration.
@@ -411,6 +415,8 @@
       </p1>
       <br><br>
       </div>
+    
+<!--    Disappearing Text-->
     <div class="col-6">
         <br><br>
         <div id="firstvisualdiv">
@@ -427,9 +433,12 @@
       <hr>
     </div>
     </div>  
-<!--      svg2-->
+    
+    
+<!--      H2 Visas in Central America-->
     <div class="row">
 
+<!--        Text-->
       <div class="col-5">
      	  <h4 id="text2">H-2 VISAS REACH IN CENTRAL AMERICA</h4>
         <br><br>
@@ -442,6 +451,8 @@
      	  <br><br>
       </div>
 
+        
+<!--    H2 Visas Bar Chart-->
         <div class="col-7">
 	 	         <div id="viz2"></div>
         <main>
@@ -498,45 +509,28 @@
             svg2.selectAll("text")
 
                  .data(agriculturedata2)
-
                  .enter()
-
                  .append("text")
 
                  .text(function(d) { return d[0]})
                 .attr("transform", "translate("+marginLeft+", " + marginTop2+")")
-
                  .attr("y", (d, i) => i * (20 + 10 + gap) + 50)
-               
                 .attr("x", 30)
-
                 .attr('class','text_styling')
-                 
                  .attr("fill" , "black")
-
                 .attr("text-anchor", "end");
                     
              svg2.selectAll("text2")
 
                  .data(agriculturedata2)
-
                  .enter()
-
                  .append("text")
                             .attr("transform", "translate("+marginLeft+", " + marginTop2+")")
-
                  .text(function(d) { return d[1]})
-
                  .attr("y", (d, i) => i * (20 + 10 + gap) + 45)
-               
                 .attr("x", d => d[1] * widthMultiplier + 60)
-
                  .attr("class", "label_styling")
-
-                 
-
                  .attr("fill" , "black")
-            
             
                 svg2.selectAll("text3")
                  .data(agriculturedata2)
